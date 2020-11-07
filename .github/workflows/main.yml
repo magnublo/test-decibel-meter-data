@@ -12,4 +12,5 @@ jobs:
         run: |
           echo "${{ secrets.SSH_KEY_SONOMETER }}" >> /tmp/id_rsa
           chmod 600 /tmp/id_rsa
-          ssh -i /tmp/id_rsa -o StrictHostKeyChecking=no ubuntu@sikkerhetshull.no -p 10022 'sudo shutdown now'
+          exit_code=$(ssh -i /tmp/id_rsa -o StrictHostKeyChecking=no ubuntu@sikkerhetshull.no -p 10022 'sudo shutdown now' || echo $?)
+          if [ $exit_code != 255 ]; then exit $exit_code; fi
