@@ -1,0 +1,15 @@
+name: Shut down decibel meter
+
+on:
+  workflow_dispatch:
+
+jobs:
+  shut-down-decibel-meter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Shut down decibel meter
+        run: |
+          echo "${{ secrets.SSH_KEY_SONOMETER }}" >> /tmp/id_rsa
+          chmod 600 /tmp/id_rsa
+          ssh -i /tmp/id_rsa ubuntu@sikkerhetshull.no -p 10022 'sudo shutdown now'
